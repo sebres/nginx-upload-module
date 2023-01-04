@@ -1355,7 +1355,7 @@ static ngx_int_t ngx_http_upload_body_handler(ngx_http_request_t *r) { /* {{{ */
     r->main->count--;
 #endif
 
-    if(uri.len != 0 && uri.data[0] == '/') {
+    if(uri.len == 0 || uri.data[0] != '@') {
         rc = ngx_http_internal_redirect(r, &uri, &args);
     }
     else{
