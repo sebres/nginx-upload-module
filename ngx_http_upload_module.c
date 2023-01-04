@@ -18,7 +18,9 @@ typedef ngx_md5_t MD5_CTX;
 #define MD5Update ngx_md5_update
 #define MD5Final ngx_md5_final
 
+#ifndef MD5_DIGEST_LENGTH
 #define MD5_DIGEST_LENGTH 16
+#endif
 
 #include <openssl/sha.h>
 
@@ -44,6 +46,19 @@ typedef ngx_md5_t MD5_CTX;
 
 
 #endif
+
+#ifdef _MSC_VER 
+  #define strncasecmp _strnicmp
+
+  static ngx_inline void
+  ftruncate(ngx_fd_t fd, off_t file_pos) {
+    LARGE_INTEGER li;
+    li.QuadPart = file_pos;
+    SetFilePointerEx(fd, li, &li, FILE_BEGIN);
+    SetEndOfFile(fd);
+  }
+#endif
+
 
 #define MULTIPART_FORM_DATA_STRING              "multipart/form-data"
 #define BOUNDARY_STRING                         "boundary="
